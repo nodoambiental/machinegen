@@ -2,7 +2,29 @@
 name = "machinegen"
 version = "0.1.0"
 edition = "2021"
+authors = ["Agata Ordano <aordano@protonmail.com>"]
+license = "MIT"
+description = "Utility that prepares, builds and deploys a KVM virtual machine with a certain configuration"
+repository = "https://github.com/nodoambiental/machinegen"
+readme = "README.md"
+license-file = "LICENSE"
+keywords = ["kvm", "terraform", "QEMU", "cloud-init"]
+categories = ["command-line-utilities", "cloud"]
+
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+clap = { version = "3.1.6", features = ["derive"] }
+# slog = "2.7.0"
+colored = "2.0.0"
+config = "0.13.1"
+regex = "1.5.5"
+lazy_static = "1.4.0"
+serde = "1.0.137"
+# man = "0.3.0"
+# pug = "0.1.10"
+
+
+[fetures]
+dumb_terminal = ["colored/no-color"]
