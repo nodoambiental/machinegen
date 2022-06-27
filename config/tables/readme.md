@@ -2,7 +2,7 @@
 
 This tables are used by the prereqs build script to load as required configs and understand what needs to be done where, and to generate the schema for the user-provided config file.
 
-## `template.tsv`
+## `template.csv`
 
 This is a file that defines the template information to replace with variables in the prereqs script.
 
@@ -14,14 +14,14 @@ It is separated into 5 columns:
 - Target: Defines the destination path of the processed file. Where is that depends on the target system, on host systems it will be relative to the current working directory.
 - Description: A description of the template.
 
-## `replace.tsv`
+## `replace.csv`
 
 This is a file that defines the variables that should be replaced in the template files.
 
 It is separated into 6 columns:
 
 - String: Defines the string to be replaced. Strings defined here should be lowercase and have spaces replaced by `_` will be found in the template files as uppercase and surrounded by three at signs. This means that a string that says potato will be found and replaced in the template file as @@@POTATO@@@. This is done to avoid misreplacements if the files grow complex.
-- Template: Defines the target file for the replacement. This value corresponds to values found on the `Name` column of the `templates.tsv` file.
+- Template: Defines the target file for the replacement. This value corresponds to values found on the `Name` column of the `templates.csv` file.
 - Mandatory: Defines if replacing this string is required
 - Unique: Defines if there can be more than one replacement for this string
 - Config parent: Defines the key under which this value will be found in the config file provided by the end user. `root` values mean there are no parents. This is set like this way because the config file format will contain lists for replacement that are configurable multimple times, with every value with the same parent corresponding to an entry in the array named like that. A JSON example:
@@ -48,7 +48,7 @@ It is separated into 6 columns:
 
 - Description: Description of the replacement.
 
-## `files.tsv`
+## `files.csv`
 
 This is a file that defines user-provided files to be copied as-is somewhere into the prereqs process.
 
