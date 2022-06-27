@@ -1,0 +1,4 @@
+Name	System	Config Parent	Target	Description
+ca_cert	guest	nebula	/etc/nebula/ca.crt	CA certificate from the nebula master lighthouse
+host_cert	guest	nebula	/etc/nebula/host.crt	CA certificate generated for this node
+host_key	guest	nebula	/etc/nebula/host.key	CA certificate key generated to represent this node
