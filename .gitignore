@@ -3,3 +3,4 @@ config/*.yaml
 config/*.img
 config/keys/
 coverage/
+.machinegen/
