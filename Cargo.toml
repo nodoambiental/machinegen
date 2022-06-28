@@ -22,6 +22,7 @@ config = "0.13.1"
 regex = "1.5.5"
 lazy_static = "1.4.0"
 serde = "1.0.137"
+csv = "1.1.6"
 # man = "0.3.0"
 # pug = "0.1.10"
 
