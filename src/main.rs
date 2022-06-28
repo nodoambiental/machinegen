@@ -7,6 +7,7 @@ mod build;
 mod clean;
 mod pull;
 mod deploy;
+mod types;
 
 fn run(cli: clap::ArgMatches) -> Result<(), String> {
     // TODO do stuff
