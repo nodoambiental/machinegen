@@ -3,7 +3,7 @@ use serde::Deserialize;
 use std::io;
 use std::path::PathBuf;
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct Replace {
     string: String,
     template: String,
@@ -13,7 +13,7 @@ pub struct Replace {
     description: String,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub enum System {
     Guest,
     Host,
@@ -28,7 +28,7 @@ impl System {
     }
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct Template {
     name: String,
     system: System,
@@ -37,7 +37,7 @@ pub struct Template {
     description: String,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct Files {
     name: String,
     system: System,
@@ -45,27 +45,33 @@ pub struct Files {
     target: PathBuf,
     description: String,
 }
-
+#[derive(Debug)]
 pub enum TableError {
     Io(io::Error),
     Csv(csv::Error),
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub enum Records {
     Replace(Replace),
     Template(Template),
     Files(Files),
 }
 
+pub enum TableTypes {
+    Replace,
+    Template,
+    Files,
+}
+
 pub type Tables = Vec<Records>;
 
-impl Records {
+impl TableTypes {
     pub fn name(&self) -> &'static str {
         match self {
-            Records::Files(_) => "files",
-            Records::Replace(_) => "replace",
-            Records::Template(_) => "template",
+            TableTypes::Files => "files",
+            TableTypes::Replace => "replace",
+            TableTypes::Template => "templates",
         }
     }
 }

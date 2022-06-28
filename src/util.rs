@@ -1,12 +1,10 @@
 use colored::*;
 use config::{Config, ConfigError};
 use csv;
-use std::fs;
-use std::io;
 use std::path::PathBuf;
-use std::process;
+use std::{env, fs, io, process};
 
-use super::types::{Files, Records, Replace, TableError, Tables, Template};
+use super::types::{Files, Records, Replace, TableError, TableTypes, Tables, Template};
 
 // From https://stackoverflow.com/a/52367953/16134348
 pub fn string_to_sstr(s: String) -> &'static str {
@@ -93,21 +91,32 @@ pub fn read_user_config() -> Result<Config, ConfigError> {
     return config;
 }
 
-pub fn load_table(table_type: Records) -> Result<Tables, TableError> {
+pub fn cwd_string() -> String {
+    env::current_dir()
+        .unwrap()
+        .into_os_string()
+        .into_string()
+        .unwrap()
+}
+
+pub fn load_table(table_type: TableTypes) -> Result<Tables, TableError> {
     let mut path = PathBuf::new();
 
+    path.push(cwd_string());
     path.push(".machinegen");
     path.push("config");
     path.push("tables");
     path.push(table_type.name());
     path.set_extension("csv");
 
+    stdout("info", path.to_str().unwrap());
+
     // load and return the config
     let file = fs::read_to_string(path);
 
     match file {
         Ok(file) => match table_type {
-            Records::Files(_) => {
+            TableTypes::Files => {
                 let mut table: Tables = Vec::new();
                 let mut reader = csv::Reader::from_reader(file.as_bytes());
                 for record in reader.deserialize::<Files>() {
@@ -122,7 +131,7 @@ pub fn load_table(table_type: Records) -> Result<Tables, TableError> {
                 }
                 return Ok(table);
             }
-            Records::Replace(_) => {
+            TableTypes::Replace => {
                 let mut table: Tables = Vec::new();
                 let mut reader = csv::Reader::from_reader(file.as_bytes());
                 for record in reader.deserialize::<Replace>() {
@@ -137,7 +146,7 @@ pub fn load_table(table_type: Records) -> Result<Tables, TableError> {
                 }
                 return Ok(table);
             }
-            Records::Template(_) => {
+            TableTypes::Template => {
                 let mut table: Tables = Vec::new();
                 let mut reader = csv::Reader::from_reader(file.as_bytes());
                 for record in reader.deserialize::<Template>() {
