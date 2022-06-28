@@ -6,6 +6,8 @@ Project Description
 
 ### Todo
 
+- [ ] Add base config stuff  
+- [ ] Add data in the readme of the config dir to explain how to fetch remote config folders from a repo  
 - [ ] Add system to load config file from remote  
 - [ ] Add pipeline for getting stuff, building reqs, and doing terraform stuff  
 - [ ] Add metadata/variable replacement system  
@@ -13,11 +15,11 @@ Project Description
 - [ ] Add coloring output system  
 - [ ] Add csv/config parsing system  
 - [ ] Add pulling system for cloud-init and terraform binaries  
-- [ ] Add base clap stuff and config stuff  
 
 ### In Progress
 
 
 ### Done ✓
 
+- [x] Add base clap stuff and config stuff  
 
