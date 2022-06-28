@@ -27,5 +27,6 @@ csv = "1.1.6"
 # pug = "0.1.10"
 
 
-[fetures]
+[features]
 dumb_terminal = ["colored/no-color"]
+debug = []

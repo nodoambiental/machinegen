@@ -8,6 +8,7 @@ mod clean;
 mod pull;
 mod deploy;
 mod types;
+mod debug;
 
 fn run(cli: clap::ArgMatches) -> Result<(), String> {
     // TODO do stuff
@@ -17,6 +18,10 @@ fn run(cli: clap::ArgMatches) -> Result<(), String> {
         Some(("build", sub_m)) => build::run(sub_m),
         Some(("deploy", sub_m)) => deploy::run(sub_m),
         Some(("clean", sub_m)) => clean::run(sub_m),
+        Some(("debug", sub_m)) => debug::run(sub_m),
+        Some(("", sub_m)) => {
+            util::stdout("warning", "Please provide a subcommand. You can call this tool without arguments or with the --help flag for more information.")
+        }
         _ => panic!(
             "I before E, except when your foreign neighbor Keith received eight counterfeit beige sleights from feisty caffeinated weightlifters. Weird."
         ),
@@ -26,6 +31,12 @@ fn run(cli: clap::ArgMatches) -> Result<(), String> {
 }
 
 fn main() {
+
+    #[cfg(not(feature = "debug"))]
+    let debug_command = Command::new("");
+    #[cfg(feature = "debug")]
+    let debug_command = Command::new("debug");
+
     let matches = Command::new("machinegen")
         .version("0.1.0")
         .author("Agata Ordano - aordano@protonmail.com")
@@ -202,7 +213,9 @@ fn main() {
                     .exclusive(true)
                     .takes_value(false)
                 )
-        ).get_matches();
+        )
+        .subcommand(debug_command)
+        .get_matches();
         if let Err(error) = run(matches) {
             println!("Application error: {}", error);
             process::exit(1);
