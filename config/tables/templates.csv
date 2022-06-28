@@ -1,4 +1,0 @@
-Name     ,System ,Source                            ,Target                  ,Description
-nebula   ,guest  ,image/nebula-config.yaml.template ,/etc/nebula/config.yaml ,Nebula config file for non-lighthouse nodes
-userdata ,host   ,image/user-data.yaml.template     ,image/user-data.yaml    ,Cloud-init configuration file
-metadata ,host   ,image/metadata.yaml.template      ,image/metadata.yaml     ,Cloud-init machine configuration file
