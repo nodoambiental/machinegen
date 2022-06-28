@@ -77,3 +77,84 @@ pub fn call_with_stdout(
         return false;
     }
 }
+
+pub fn read_user_config() -> Result<Config, ConfigError> {
+    let mut path = PathBuf::new();
+
+    path.push(".machinegen");
+    path.push("config");
+    path.push("user");
+    path.set_extension("json");
+
+    // load and return the config
+    let config = Config::builder()
+        .add_source(config::File::new("site", config::FileFormat::Json5))
+        .build();
+    return config;
+}
+
+pub fn load_table(table_type: Records) -> Result<Tables, TableError> {
+    let mut path = PathBuf::new();
+
+    path.push(".machinegen");
+    path.push("config");
+    path.push("tables");
+    path.push(table_type.name());
+    path.set_extension("csv");
+
+    // load and return the config
+    let file = fs::read_to_string(path);
+
+    match file {
+        Ok(file) => match table_type {
+            Records::Files(_) => {
+                let mut table: Tables = Vec::new();
+                let mut reader = csv::Reader::from_reader(file.as_bytes());
+                for record in reader.deserialize::<Files>() {
+                    let parsed: Files = match record {
+                        Ok(record) => record,
+                        Err(error) => {
+                            stdout("error", &format!("{}", error));
+                            return Err(TableError::Csv(error));
+                        }
+                    };
+                    table.push(Records::Files(parsed));
+                }
+                return Ok(table);
+            }
+            Records::Replace(_) => {
+                let mut table: Tables = Vec::new();
+                let mut reader = csv::Reader::from_reader(file.as_bytes());
+                for record in reader.deserialize::<Replace>() {
+                    let parsed: Replace = match record {
+                        Ok(record) => record,
+                        Err(error) => {
+                            stdout("error", &format!("{}", error));
+                            return Err(TableError::Csv(error));
+                        }
+                    };
+                    table.push(Records::Replace(parsed));
+                }
+                return Ok(table);
+            }
+            Records::Template(_) => {
+                let mut table: Tables = Vec::new();
+                let mut reader = csv::Reader::from_reader(file.as_bytes());
+                for record in reader.deserialize::<Template>() {
+                    let parsed: Template = match record {
+                        Ok(record) => record,
+                        Err(error) => {
+                            stdout("error", &format!("{}", error));
+                            return Err(TableError::Csv(error));
+                        }
+                    };
+                    table.push(Records::Template(parsed));
+                }
+                return Ok(table);
+            }
+        },
+        Err(error) => {
+            return Err(TableError::Io(error));
+        }
+    }
+}
