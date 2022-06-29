@@ -35,7 +35,18 @@ fn main() {
     #[cfg(not(feature = "debug"))]
     let debug_command = Command::new("");
     #[cfg(feature = "debug")]
-    let debug_command = Command::new("debug");
+    let debug_command = Command::new("debug")
+    .subcommand_required(true)
+        .arg_required_else_help(true)
+    .about("Runs the debug mode")
+    .subcommand(Command::new("table")
+        .about("table debug stuff")
+        .subcommand_required(true)
+        .arg_required_else_help(true)
+        .subcommand(Command::new("parse")
+            .about("Directly parse tables in the machinegen folder and output the parsed struct to stdout")
+        )
+    );
 
     let matches = Command::new("machinegen")
         .version("0.1.0")
