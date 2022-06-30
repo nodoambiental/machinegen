@@ -11,6 +11,7 @@ pub fn run(sub_match: &clap::ArgMatches) {
 fn table(table_match: &clap::ArgMatches) {
     match table_match.subcommand() {
         Some(("parse", parse_match)) => table_parse(parse_match),
+        Some(("process", parse_match)) => table_process(parse_match),
         _ => unreachable!(),
     }
 }
@@ -20,4 +21,16 @@ fn table_parse(parse_match: &clap::ArgMatches) {
     println!("{:?}\n", util::load_table(TableTypes::Replace));
     println!("{:?}\n", util::load_table(TableTypes::Files));
     println!("{:?}\n", util::load_table(TableTypes::Template));
+}
+
+fn table_process(parse_match: &clap::ArgMatches) {
+    // Test table processing
+
+    #[cfg(feature = "debug")]
+    util::stdout(
+        "debug",
+        "\nPrinting the whole machine data relationships struct:",
+    );
+
+    println!("{:?}\n", util::process_relations());
 }

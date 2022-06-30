@@ -10,6 +10,7 @@ mod deploy;
 mod types;
 mod debug;
 
+
 fn run(cli: clap::ArgMatches) -> Result<(), String> {
     // TODO do stuff
 
@@ -31,7 +32,6 @@ fn run(cli: clap::ArgMatches) -> Result<(), String> {
 }
 
 fn main() {
-
     #[cfg(not(feature = "debug"))]
     let debug_command = Command::new("");
     #[cfg(feature = "debug")]
@@ -44,7 +44,10 @@ fn main() {
         .subcommand_required(true)
         .arg_required_else_help(true)
         .subcommand(Command::new("parse")
-            .about("Directly parse tables in the machinegen folder and output the parsed struct to stdout")
+            .about("Directly parse tables in the machinegen folder and output the parsed structs to stdout")
+        )
+        .subcommand(Command::new("process")
+            .about("Directly parse tables in the machinegen folder, build the internal representation of the data, and otputs the parsed structs to stdout")
         )
     );
 
