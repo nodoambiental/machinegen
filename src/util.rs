@@ -22,6 +22,14 @@ pub fn stdout(selector: &str, message: &str) {
                 message.bright_blue()
             );
         }
+        "debug" => {
+            println!(
+                "{}{} {}",
+                "[machinegen]".bright_purple().bold(),
+                "[debug]".yellow().bold(),
+                message.italic().yellow()
+            );
+        }
         "fatal" => {
             println!(
                 "{} {} {}",
